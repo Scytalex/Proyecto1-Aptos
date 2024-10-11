@@ -128,5 +128,13 @@ public entry fun modificar_categoria (account:&signer, titulo:String, categoria:
 	if (is_some(&categoria)) libros.categoria = *option::borrow(&categoria);
 
 }
+public entry fun eliminar_libro(account: &signer, titulo: String) acquires Biblioteca {
+        assert!(exists<Biblioteca>(address_of(account)), NO_INICIALIZADO);
+
+        let libros = borrow_global_mut<Biblioteca>(address_of(account));
+        assert!(table::contains(&libros.libros, Titulo { titulo }), REGISTRO_NO_EXISTE);
+
+        table::remove(&mut libros.libros, Titulo { titulo });
+    } 
    
 }
